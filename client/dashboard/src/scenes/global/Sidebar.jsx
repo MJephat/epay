@@ -80,7 +80,7 @@ const Sidebar = () => {
                 ml="15px"
               >
                 <Typography variant="h3" color={colors.grey[100]}>
-                  ADMINIS
+                  ADMIN
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -93,10 +93,10 @@ const Sidebar = () => {
             <Box mb="25px">
               <Box display="flex" justifyContent="center" alignItems="center">
                 <img
-                  alt="profile-user"
+                  src="https://media.licdn.com/dms/image/D4D35AQGNT65QaBg0dg/profile-framedphoto-shrink_400_400/0/1697478206337?e=1698994800&v=beta&t=yikJutt8j8Zi_eaYhbFJ9GvhtMp37fu9kSA2uis-JsU"
+                  alt="admin"
                   width="100px"
                   height="100px"
-                  src={`../../assets/user.png`}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -107,10 +107,10 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Ed Roh
+                  El Champion
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  VP Fancy Admin
+                  Rental Admin
                 </Typography>
               </Box>
             </Box>

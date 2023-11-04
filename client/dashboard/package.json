@@ -1,6 +1,7 @@
 {
   "name": "dashboard",
   "version": "0.1.0",
+  "proxy": "http://127.0.0.1:5000",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -23,6 +24,7 @@
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.3.2",
     "formik": "^2.4.5",
+    "mobiscroll": "^3.0.0-beta6",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",

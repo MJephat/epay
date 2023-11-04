@@ -75,7 +75,7 @@ const Sidebar = () => {
           {!isCollapsed && (
             <Box mb="25px">
               <Box display="flex" justifyContent="center" alignItems="center">
-                <img src="https://media.licdn.com/dms/image/D4D35AQGNT65QaBg0dg/profile-framedphoto-shrink_400_400/0/1697478206337?e=1698994800&v=beta&t=yikJutt8j8Zi_eaYhbFJ9GvhtMp37fu9kSA2uis-JsU"
+                <img src="https://media.licdn.com/dms/image/D4D35AQGNT65QaBg0dg/profile-framedphoto-shrink_400_400/0/1697478206337?e=1699693200&v=beta&t=QXIhvf7-YCTOKhhvxAqi3jIAEEDdPs8_QE_dEcuN7eg"
                   alt="admin" width="100px" height="100px" style={{ cursor: "pointer", borderRadius: "50%" }}/>
               </Box>
 
@@ -96,7 +96,7 @@ const Sidebar = () => {
             />
 
 
-          <Item title="Auth" to="/auth" icon={<PeopleOutlinedIcon />}
+          <Item title="Login" to="/auth" icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -110,7 +110,7 @@ const Sidebar = () => {
               Data
             </Typography>
 
-            <Item title="Manage Team" to="/team" icon={<PeopleOutlinedIcon />} 
+            <Item title="Tenants" to="/team" icon={<PeopleOutlinedIcon />} 
               selected={selected}
               setSelected={setSelected}
             />

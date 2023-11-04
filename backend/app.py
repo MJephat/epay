@@ -5,13 +5,14 @@ from flask_migrate import Migrate
 from config import DevConfig
 from flask_sqlalchemy import SQLAlchemy
 from exts import db
-from model import Admin
+from model import Admin,Tenant
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager,get_jwt_identity, create_access_token, create_refresh_token, jwt_required
-
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config.from_object(DevConfig)
+CORS(app)
 
 db.init_app(app)
 
@@ -37,6 +38,20 @@ login_model = api.model(
     {
         "email":fields.String(),
         "password":fields.String()
+    }
+)
+
+tenant_model =api.model(
+    "Upload",
+    {
+        "your_names":fields.String(),
+        "phone":fields.String(),
+        "address":fields.String(),
+        "city":fields.String(),
+        "house_no":fields.String(),
+        "rent":fields.String(),
+        "members":fields.String(),
+        "zip_code":fields.String(),
     }
 )
 
@@ -86,12 +101,58 @@ class Login(Resource):
             return jsonify({"acess_token": access_token, "refresh_token": refresh_token})
 
 
+@api.route("/upload", methods=["POST"])
+class Upload(Resource):
+    @api.expect(tenant_model)
+    def post(self):
+        # add new tenant
+        data=request.get_json()
+
+        new_tenant=Tenant(
+            your_names=data.get('your_names'),
+            phone=data.get('phone'),
+            address=data.get('address'),
+            city=data.get('city'),
+            house_no=data.get('house_no'),
+            rent=data.get('rent'),
+            members=data.get('members'),
+            zip_code=data.get('zip_code'),
+        )
+        db.session.add(new_tenant)
+        db.session.commit()
+        return make_response(jsonify({"message":"Admin created successfully"}))
+
+
+@api.route("/tenants", methods=['GET'])
+class TenantsList(Resource):
+    @api.marshal_list_with(tenant_model)
+    def get(self):
+        """Get all tenants"""
+        tenants = Tenant.query.all()
+        return tenants     
+
+@api.route('/tenants/<int:tenant_id>', methods=['DELETE'])
+class DeleteTenant(Resource):
+    @api.marshal_with(tenant_model)
+    def delete(self, tenant_id):
+        tenant_delete=Tenant.query.get_or_404(tenant_id)
+        # if not tenant_delete:
+        #     return make_response(jsonify({"message":"tenant not found"})), 404
+        tenant_delete.delete()
+        # db.session.delete(tenant_delete)
+        # db.session.commit()
+        return {"message":"Tenants deleted successfully"},
+        # return tenant_delete, 200
+
+        
+
 
 @app.shell_context_processor
 def make_shell_context():
     return {
         "db": db,
         "Admin": Admin,
+        "Tenant": Tenant
     }
 
 if __name__ == "__main__":

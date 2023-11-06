@@ -37,3 +37,32 @@ class Tenant(db.Model):
     def delete (self):
         db.session.delete(self)
         db.session.commit()
+
+    def update (self, your_names, phone,address,city,house_no,members,zip_code):
+        self.your_names=your_names
+        self.phone=phone
+        self.address=address
+        self.city=city
+        self.house_no=house_no
+        self.members=members
+        self.zip_code=zip_code
+
+        db.session.commit()
+
+class Stima(db.Model):
+    __tablename__ = 'stimas'
+    id = db.Column(db.Integer, primary_key=True)
+    month = db.Column(db.String(255), nullable=False) 
+    bill = db.Column(db.String(255), nullable=False)
+
+    def __repr__(self):
+        return f"<Stima {self.bill}>"
+
+    def save (self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete (self):
+        db.session.delete(self)
+        db.session.commit()
+

@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from config import DevConfig
 from flask_sqlalchemy import SQLAlchemy
 from exts import db
-from model import Admin,Tenant
+from model import Admin,Tenant, Stima
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager,get_jwt_identity, create_access_token, create_refresh_token, jwt_required
 from flask_cors import CORS
@@ -52,6 +52,14 @@ tenant_model =api.model(
         "rent":fields.String(),
         "members":fields.String(),
         "zip_code":fields.String(),
+    }
+)
+
+stima_model = api.model(
+    "StimaResource",
+    {
+        "month":fields.String(),
+        "bill":fields.String(),
     }
 )
 
@@ -129,30 +137,77 @@ class TenantsList(Resource):
     def get(self):
         """Get all tenants"""
         tenants = Tenant.query.all()
-        return tenants     
+        return tenants   
 
+# update Route
+# @api.route('/tenants/<int:tenant_id>', methods=['PUT'])
+# class UpdateTenant(Resource):
+#     @api.marshal_with(tenant_model)
+#     def put(self, tenant_id):
+        """Update a Tenant info by id"""
+        # tenant_to_update=Tenant.query.get_or_404(id)
+
+        # data=request.get_json()
+
+        # tenant_to_update.update(data.get('your_names'),data.get('phone'),data.get('address'),data.get('city'),data.get('house_no'),data.get('members'),data.get('zip_code'))
+
+        # return tenant_to_update
+@app.route("/tenats/<int:tenant_id>", methods=['PATCH'])
+def update_report(report_id):
+        tenant = Tenant.query.get(tenant_id)
+        if not tenant:
+            return jsonify({'error': 'Tenant not found.'}), 404
+        # Get the updated data from the request
+        data = request.json
+        # Update the tenant fields with the new data
+        tenant.your_names = data.get('your_names', tenant.your_names)
+        tenant.phone = data.get('phone', tenant.phone)
+        tenant.address = data.get('address', tenant.address)
+        tenant.city = data.get('city', tenant.city)
+        tenant.house_no = data.get('house_no', tenant.house_no)
+        tenant.rent = data.get('rent', tenant.rent)
+        tenant.members = data.get('members', tenant.members)
+        tenant.zip_code = data.get('zip_code', tenant.zip_code)
+        # Commit the changes to the database
+        db.session.commit()
+        return jsonify({'message': 'tenant updated successfully.'})
+
+  
+
+# deleting route
 @api.route('/tenants/<int:tenant_id>', methods=['DELETE'])
 class DeleteTenant(Resource):
     @api.marshal_with(tenant_model)
     def delete(self, tenant_id):
         tenant_delete=Tenant.query.get_or_404(tenant_id)
-        # if not tenant_delete:
-        #     return make_response(jsonify({"message":"tenant not found"})), 404
+
         tenant_delete.delete()
-        # db.session.delete(tenant_delete)
-        # db.session.commit()
-        return {"message":"Tenants deleted successfully"},
-        # return tenant_delete, 200
+        return make_response(jsonify ({"message":"Tenants deleted successfully"})), 200
 
         
+@api.route("/stima", methods=["POST"])
+class StimaResource(Resource):
+    @api.expect(stima_model)
+    def post(self):
+        # add new tenant
+        data=request.get_json()
 
+        new_stimabill=Stima(
+            month=data.get('month'),
+            bill=data.get('bill'),
+
+        )
+        db.session.add(new_stimabill)
+        db.session.commit()
+        return make_response(jsonify({"message":"Bill uploaded successfully"}))
 
 @app.shell_context_processor
 def make_shell_context():
     return {
         "db": db,
         "Admin": Admin,
-        "Tenant": Tenant
+        "Tenant": Tenant,
+        "Stima": Stima,
     }
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 import React ,{useState} from 'react'
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 
+
 export default function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");

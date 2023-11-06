@@ -80,7 +80,7 @@ const Sidebar = () => {
               </Box>
 
               <Box textAlign="center">
-                <Typography variant="h2" color={colors.grey[100]} fontWeight="bold" sx={{ m: "10px 0 0 0" }}> El Champion </Typography>
+                <Typography variant="h2" color={colors.grey[100]} fontWeight="bold" sx={{ m: "10px 0 0 0" }}> PLOT-953 (Dandora) </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}> Rental Admin </Typography>
               </Box>
             </Box>
